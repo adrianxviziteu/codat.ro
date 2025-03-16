@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { FlipWords } from './ui/flip-words';
 
 export default function Hero() {
   const [imei, setImei] = useState('');
   const [imeiError, setImeiError] = useState('');
   const [verificationType, setVerificationType] = useState('simple');
-  const [showImeiHelp, setShowImeiHelp] = useState(false);
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
 
   const handleImeiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,42 +59,48 @@ export default function Hero() {
 
   return (
     <>
-      <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-white to-gray-50">
-        {/* Background patterns */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-[#017AFF]/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-1/4 w-[800px] h-[800px] bg-[#017AFF]/10 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-blue-100/20 rounded-full blur-3xl"></div>
-        </div>
-
+      <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="max-w-3xl mx-auto"
           >
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="mb-4 inline-flex items-center justify-center"
+            >
+              <span className="px-3 py-1 text-xs font-medium text-blue-600 border border-blue-200 rounded-full bg-blue-50/50 backdrop-blur-sm">
+                BETA
+              </span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight overflow-visible px-4 sm:px-0"
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#017AFF] to-blue-500">
-                Verifică iPhone-ul
-              </span>
-              <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
-                înainte să-l cumperi
-              </span>
+              <div className="inline-flex flex-wrap justify-center items-center gap-2 sm:gap-3">
+                <span className="text-gray-900">
+                  Verifică iPhone-ul
+                </span>
+                <FlipWords 
+                  words={["rapid", "sigur", "eficient"]} 
+                  className="text-[#017AFF] inline-block min-w-[90px] sm:min-w-[120px] md:min-w-[150px] lg:min-w-[180px]" 
+                  duration={2000}
+                />
+              </div>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="mt-4 text-lg text-gray-600 max-w-xl mx-auto"
+              className="mt-4 text-base sm:text-lg text-gray-600 max-w-xl mx-auto px-4 sm:px-0"
             >
               Află instant dacă iPhone-ul este deblocat, în garanție sau are probleme de activare.
             </motion.p>
@@ -103,7 +109,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="mt-8 max-w-xl mx-auto"
+              className="mt-8 max-w-xl mx-auto px-4 sm:px-0"
             >
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -116,7 +122,7 @@ export default function Hero() {
                         value={imei}
                         onChange={handleImeiChange}
                         placeholder="Introdu numărul IMEI"
-                        className={`block w-full px-6 py-4 text-lg rounded-xl border-2 ${
+                        className={`block w-full px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg rounded-xl border-2 ${
                           imeiError 
                             ? 'border-red-500 focus:ring-red-500' 
                             : 'border-gray-200 focus:ring-[#017AFF]'
@@ -128,7 +134,7 @@ export default function Hero() {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.95 }}
                           type="submit"
-                          className="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-[#017AFF] to-blue-500 rounded-lg shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#017AFF] transition-all duration-300"
+                          className="px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium text-white bg-gradient-to-r from-[#017AFF] to-blue-500 rounded-lg shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#017AFF] transition-all duration-300"
                         >
                           Verifică
                         </motion.button>
@@ -151,7 +157,7 @@ export default function Hero() {
 
                 {/* Recent Users Section */}
                 <div className="mt-8">
-                  <div className="flex items-center justify-center space-x-2">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-2">
                     <div className="flex -space-x-2">
                       {testimonials.map((user, index) => (
                         <motion.div
@@ -166,7 +172,7 @@ export default function Hero() {
                             alt={user.name}
                             className="w-8 h-8 rounded-full border-2 border-white shadow-sm"
                           />
-                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
                             {user.name}
                             <br />
                             <span className="text-gray-400 text-xs">{user.time}</span>
@@ -175,48 +181,13 @@ export default function Hero() {
                       ))}
                     </div>
                     <div className="text-sm text-gray-600">
-                      <span className="font-semibold">2,543</span> verificări în ultima săptămână
+                      <div className="flex items-center justify-center">
+                        <div className="flex items-center text-gray-500">
+                          <span className="font-semibold">2,543</span>&nbsp;verificări în ultima săptămână
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <p className="mt-3 text-sm text-gray-500">
-                    <button 
-                      onClick={() => setShowImeiHelp(!showImeiHelp)}
-                      className="text-[#017AFF] hover:text-blue-600 focus:outline-none flex items-center justify-center mx-auto"
-                    >
-                      <span>Cum găsesc IMEI-ul?</span>
-                      <svg 
-                        className={`w-4 h-4 ml-1 transform transition-transform ${showImeiHelp ? 'rotate-180' : ''}`} 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    {showImeiHelp && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="mt-2 p-4 bg-white rounded-xl shadow-lg text-left"
-                      >
-                        <p className="font-medium text-gray-900 mb-2">Găsește IMEI-ul în 3 moduri simple:</p>
-                        <ul className="space-y-2">
-                          <li className="flex items-start">
-                            <span className="text-[#017AFF] mr-2">1.</span>
-                            <span>Tastează <span className="font-mono bg-gray-100 px-1 rounded">*#06#</span> pe telefonul tău</span>
-                          </li>
-                          <li className="flex items-start">
-                            <span className="text-[#017AFF] mr-2">2.</span>
-                            <span>Verifică în <strong>Setări</strong> → <strong>Despre telefon</strong> → <strong>IMEI</strong></span>
-                          </li>
-                          <li className="flex items-start">
-                            <span className="text-[#017AFF] mr-2">3.</span>
-                            <span>Caută pe cutia telefonului sau sub baterie (dacă este detașabilă)</span>
-                          </li>
-                        </ul>
-                      </motion.div>
-                    )}
-                  </p>
                 </div>
               </form>
             </motion.div>
@@ -227,7 +198,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8 }}
-            className="mt-12 relative max-w-sm mx-auto"
+            className="mt-12 relative max-w-[280px] sm:max-w-sm mx-auto"
           >
             <div className="relative">
               <Image
@@ -255,7 +226,7 @@ export default function Hero() {
                   },
                   delay: 1.8
                 }}
-                className="absolute -right-32 top-12 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
+                className="hidden sm:flex absolute -right-32 top-12 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
               >
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
@@ -270,7 +241,7 @@ export default function Hero() {
                 </div>
               </motion.div>
 
-              {/* Floating Service Cards */}
+              {/* Floating Service Cards - Hidden on mobile */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ 
@@ -286,7 +257,7 @@ export default function Hero() {
                   },
                   delay: 1
                 }}
-                className="absolute -left-32 top-1/4 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
+                className="hidden sm:flex absolute -left-32 top-1/4 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
               >
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
@@ -316,7 +287,7 @@ export default function Hero() {
                   },
                   delay: 1.2
                 }}
-                className="absolute -right-36 top-1/3 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
+                className="hidden sm:flex absolute -right-36 top-1/3 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
               >
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -346,7 +317,7 @@ export default function Hero() {
                   },
                   delay: 1.4
                 }}
-                className="absolute -left-28 bottom-1/3 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
+                className="hidden sm:flex absolute -left-28 bottom-1/3 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
               >
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
@@ -376,7 +347,7 @@ export default function Hero() {
                   },
                   delay: 1.6
                 }}
-                className="absolute -right-32 bottom-1/3 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
+                className="hidden sm:flex absolute -right-32 bottom-1/3 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-gray-100"
               >
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
@@ -390,6 +361,39 @@ export default function Hero() {
                   </div>
                 </div>
               </motion.div>
+
+              {/* Mobile-only service indicators */}
+              <div className="sm:hidden absolute inset-0 flex items-center justify-center">
+                <div className="grid grid-cols-2 gap-2 p-4">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-md border border-gray-100">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                      </div>
+                      <div className="text-left">
+                        <p className="text-xs font-medium text-gray-900">Status</p>
+                        <p className="text-[10px] text-amber-600">Clean</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-md border border-gray-100">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div className="text-left">
+                        <p className="text-xs font-medium text-gray-900">MDM</p>
+                        <p className="text-[10px] text-green-600">Inactiv</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* Decorative elements */}
               <div className="absolute -top-4 -left-4 w-20 h-20 bg-blue-200 rounded-full blur-2xl opacity-60"></div>
@@ -413,14 +417,14 @@ export default function Hero() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl z-50 p-6"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl z-50 p-4 sm:p-6"
               >
                 <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20">
-                  <div className="relative p-8">
+                  <div className="relative p-4 sm:p-8">
                     {/* Close button */}
                     <button
                       onClick={() => setShowVerificationPopup(false)}
-                      className="absolute right-6 top-6 p-2 rounded-full hover:bg-gray-100 transition-colors"
+                      className="absolute right-4 sm:right-6 top-4 sm:top-6 p-2 rounded-full hover:bg-gray-100 transition-colors"
                     >
                       <svg className="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -428,13 +432,13 @@ export default function Hero() {
                     </button>
 
                     {/* Header */}
-                    <div className="text-left mb-8">
+                    <div className="text-left mb-6 sm:mb-8">
                       <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
                       >
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
                           Alege planul potrivit pentru tine
                         </h3>
                         <p className="text-sm text-gray-500">
@@ -443,7 +447,7 @@ export default function Hero() {
                       </motion.div>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                       <motion.button
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -619,17 +623,17 @@ export default function Hero() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="mt-8 flex justify-end space-x-4"
+                      className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end gap-3 sm:gap-4"
                     >
                       <button
                         onClick={() => setShowVerificationPopup(false)}
-                        className="px-6 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-colors"
+                        className="px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-colors"
                       >
                         Anulează
                       </button>
                       <button
                         onClick={() => setShowVerificationPopup(false)}
-                        className="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-[#017AFF] to-blue-500 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 hover:scale-[1.02] transition-all duration-200"
+                        className="px-4 sm:px-6 py-2 sm:py-3 text-sm font-medium text-white bg-gradient-to-r from-[#017AFF] to-blue-500 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 hover:scale-[1.02] transition-all duration-200"
                       >
                         Verifică acum
                       </button>

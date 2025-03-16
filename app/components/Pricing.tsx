@@ -1,161 +1,109 @@
 'use client';
-import { motion } from 'framer-motion';
+import React from 'react';
 
 export default function Pricing() {
-  const tiers = [
-    {
-      name: 'Basic',
-      price: '49',
-      description: 'Perfect for small businesses and individual sellers',
-      features: [
-        '1,000 IMEI checks/month',
-        'Basic device information',
-        'Theft status check',
-        'Email support',
-        'Basic API access',
-      ],
-      cta: 'Start Verifying',
-      mostPopular: false,
-    },
-    {
-      name: 'Professional',
-      price: '149',
-      description: 'For businesses with higher verification needs',
-      features: [
-        '10,000 IMEI checks/month',
-        'Full device specifications',
-        'Carrier & lock status',
-        'Priority support',
-        'Advanced API access',
-        'Bulk verification tools',
-      ],
-      cta: 'Start Pro Plan',
-      mostPopular: true,
-    },
-    {
-      name: 'Enterprise',
-      price: 'Custom',
-      description: 'For large organizations with custom requirements',
-      features: [
-        'Unlimited IMEI checks',
-        'Custom integration options',
-        'Dedicated account manager',
-        '24/7 priority support',
-        'Custom API solutions',
-        'SLA guarantee',
-      ],
-      cta: 'Contact Sales',
-      mostPopular: false,
-    },
-  ];
-
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-  };
-
   return (
-    <div id="pricing" className="relative bg-white py-24 sm:py-32">
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#017AFF]/5 to-white/0"></div>
+    <div className="relative isolate px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+      <div className="mx-auto max-w-4xl text-center">
+        <h2 className="text-base font-semibold text-[#017AFF]">Prețuri</h2>
+        <p className="mt-2 text-3xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl lg:text-6xl">Alege planul potrivit pentru tine</p>
       </div>
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mx-auto max-w-4xl text-center"
-        >
-          <h2 className="text-base font-semibold leading-7 text-[#017AFF]">Pricing</h2>
-          <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Choose your verification plan
+      <p className="mx-auto mt-4 max-w-2xl text-center text-base text-pretty text-gray-600 sm:mt-6 sm:text-lg lg:text-xl">Alege un plan accesibil care îți oferă toate informațiile necesare pentru a verifica iPhone-ul înainte de a-l cumpăra.</p>
+      <div className="mx-auto mt-10 grid max-w-lg grid-cols-1 items-center gap-y-4 sm:mt-16 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
+        <div className="rounded-3xl bg-white/60 p-6 ring-1 ring-gray-900/10 sm:mx-8 sm:p-8 lg:mx-0 lg:rounded-tr-none lg:rounded-bl-3xl backdrop-blur-sm">
+          <h3 id="tier-basic" className="text-base font-semibold text-[#017AFF]">Basic</h3>
+          <p className="mt-3 flex items-baseline gap-x-2 sm:mt-4">
+            <span className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">3 LEI</span>
+            <span className="text-sm text-gray-500 sm:text-base">/verificare</span>
           </p>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Simple, transparent pricing for businesses of all sizes
+          <p className="mt-4 text-sm text-gray-600 sm:mt-6 sm:text-base">Planul perfect pentru verificarea rapidă a unui iPhone înainte de achiziție.</p>
+          <ul role="list" className="mt-6 space-y-2.5 text-sm text-gray-600 sm:mt-8 sm:space-y-3">
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Status Activare
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Garanție Apple
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Model și Specificații
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Raport PDF
+            </li>
+          </ul>
+          <a href="#" aria-describedby="tier-basic" className="mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold text-[#017AFF] ring-1 ring-[#017AFF]/20 ring-inset hover:ring-[#017AFF]/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#017AFF] sm:mt-8 sm:px-3.5 sm:py-2.5">Verifică acum</a>
+        </div>
+        <div className="relative rounded-3xl bg-gray-900 p-6 ring-1 shadow-2xl ring-gray-900/10 sm:p-8 backdrop-blur-sm">
+          <h3 id="tier-pro" className="text-base font-semibold text-[#017AFF]/80">PRO</h3>
+          <p className="mt-3 flex items-baseline gap-x-2 sm:mt-4">
+            <span className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">5 LEI</span>
+            <span className="text-sm text-gray-400 sm:text-base">/verificare</span>
           </p>
-        </motion.div>
-
-        <motion.div 
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mt-20"
-        >
-          {tiers.map((tier, index) => (
-            <motion.div
-              key={index}
-              variants={item}
-              className="relative"
-            >
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className={`relative flex h-full flex-col rounded-3xl p-8 ${
-                  tier.mostPopular
-                    ? 'bg-[#017AFF]/5 ring-2 ring-[#017AFF]'
-                    : 'bg-white ring-1 ring-gray-200'
-                } shadow-lg hover:shadow-xl transition-all duration-300`}
-              >
-                {tier.mostPopular && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex items-center rounded-full bg-[#017AFF] px-3 py-1 text-sm font-semibold text-white">
-                      Most popular
-                    </span>
-                  </div>
-                )}
-
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold leading-7 text-gray-900">{tier.name}</h3>
-                  <div className="mt-6 flex items-baseline gap-x-2">
-                    {tier.price === 'Custom' ? (
-                      <span className="text-5xl font-bold tracking-tight text-gray-900">Custom</span>
-                    ) : (
-                      <>
-                        <span className="text-5xl font-bold tracking-tight text-gray-900">${tier.price}</span>
-                        <span className="text-sm font-semibold leading-6 text-gray-600">/month</span>
-                      </>
-                    )}
-                  </div>
-                  <p className="mt-4 text-sm leading-6 text-gray-600">{tier.description}</p>
-
-                  <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600">
-                    {tier.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex gap-x-3">
-                        <svg className="h-6 w-5 flex-none text-[#017AFF]" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`mt-8 block w-full rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
-                    tier.mostPopular
-                      ? 'bg-[#017AFF] text-white hover:bg-[#017AFF]/90 focus-visible:outline-[#017AFF]'
-                      : 'bg-white text-[#017AFF] ring-1 ring-inset ring-[#017AFF]/20 hover:ring-[#017AFF]/30 focus-visible:outline-[#017AFF]'
-                  } transition-all duration-300`}
-                >
-                  {tier.cta}
-                </motion.button>
-              </motion.div>
-            </motion.div>
-          ))}
-        </motion.div>
+          <p className="mt-4 text-sm text-gray-300 sm:mt-6 sm:text-base">Verificare completă pentru a te asigura că iPhone-ul este perfect.</p>
+          <ul role="list" className="mt-6 space-y-2.5 text-sm text-gray-300 sm:mt-8 sm:space-y-3">
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]/80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Status Activare
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]/80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Verificare iCloud
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]/80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Garanție Apple
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]/80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Blocare Operator
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]/80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Status MDM
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]/80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Blacklist Status
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]/80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Model și Specificații
+            </li>
+            <li className="flex gap-x-3">
+              <svg className="h-6 w-5 flex-none text-[#017AFF]/80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
+              </svg>
+              Raport PDF detaliat
+            </li>
+          </ul>
+          <a href="#" aria-describedby="tier-pro" className="mt-6 block rounded-md bg-[#017AFF] px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-[#0165d4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#017AFF] sm:mt-8 sm:px-3.5 sm:py-2.5">Verifică acum</a>
+        </div>
       </div>
     </div>
   );

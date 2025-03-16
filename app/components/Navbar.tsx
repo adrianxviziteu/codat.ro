@@ -16,6 +16,21 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('nav')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isMenuOpen]);
+
   const menuVariants = {
     closed: {
       opacity: 0,
@@ -38,15 +53,15 @@ export default function Navbar() {
       scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-16 sm:h-20">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
               <motion.span 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-2xl font-bold text-[#017AFF]"
+                className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#017AFF] to-blue-500"
               >
-                IMEICheck
+                CODAT.RO
               </motion.span>
             </Link>
           </div>
@@ -59,10 +74,34 @@ export default function Navbar() {
               transition={{ delay: 0.1 }}
               className="flex space-x-8"
             >
-              <Link href="#features" className="text-gray-600 hover:text-[#017AFF] transition-colors">Features</Link>
-              <Link href="#how-it-works" className="text-gray-600 hover:text-[#017AFF] transition-colors">How it Works</Link>
-              <Link href="#pricing" className="text-gray-600 hover:text-[#017AFF] transition-colors">Pricing</Link>
-              <Link href="#contact" className="text-gray-600 hover:text-[#017AFF] transition-colors">Contact</Link>
+              <Link 
+                href="#features" 
+                className="text-gray-600 hover:text-[#017AFF] transition-colors text-sm font-medium relative group"
+              >
+                Verificare IMEI
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+              </Link>
+              <Link 
+                href="#how-it-works" 
+                className="text-gray-600 hover:text-[#017AFF] transition-colors text-sm font-medium relative group"
+              >
+                Cum funcționează
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+              </Link>
+              <Link 
+                href="#pricing" 
+                className="text-gray-600 hover:text-[#017AFF] transition-colors text-sm font-medium relative group"
+              >
+                Prețuri
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+              </Link>
+              <Link 
+                href="#about" 
+                className="text-gray-600 hover:text-[#017AFF] transition-colors text-sm font-medium relative group"
+              >
+                Despre noi
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+              </Link>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: -20 }}
@@ -70,10 +109,10 @@ export default function Navbar() {
               transition={{ delay: 0.2 }}
             >
               <Link 
-                href="/login" 
-                className="bg-[#017AFF] text-white px-4 py-2 rounded-md hover:bg-[#017AFF]/90 transition-all duration-300 hover:scale-105 active:scale-95"
+                href="#contact" 
+                className="bg-gradient-to-r from-[#017AFF] to-blue-500 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 active:scale-95 transition-all duration-300 text-sm font-medium"
               >
-                Login
+                Contact
               </Link>
             </motion.div>
           </div>
@@ -85,8 +124,12 @@ export default function Navbar() {
             className="md:hidden flex items-center"
           >
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMenuOpen(!isMenuOpen);
+              }}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-[#017AFF] focus:outline-none transition-colors"
+              aria-label="Toggle menu"
             >
               <svg
                 className="h-6 w-6"
@@ -113,14 +156,46 @@ export default function Navbar() {
             animate="open"
             exit="closed"
             variants={menuVariants}
-            className="md:hidden bg-white/95 backdrop-blur-md shadow-lg"
+            className="md:hidden bg-white/95 backdrop-blur-md shadow-lg rounded-b-xl border-t border-gray-100"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <Link href="#features" className="block px-3 py-2 text-gray-600 hover:text-[#017AFF] transition-colors">Features</Link>
-              <Link href="#how-it-works" className="block px-3 py-2 text-gray-600 hover:text-[#017AFF] transition-colors">How it Works</Link>
-              <Link href="#pricing" className="block px-3 py-2 text-gray-600 hover:text-[#017AFF] transition-colors">Pricing</Link>
-              <Link href="#contact" className="block px-3 py-2 text-gray-600 hover:text-[#017AFF] transition-colors">Contact</Link>
-              <Link href="/login" className="block px-3 py-2 text-[#017AFF] hover:text-[#017AFF]/90 transition-colors">Login</Link>
+            <div className="px-4 pt-2 pb-4 space-y-1">
+              <Link 
+                href="#features" 
+                className="block px-3 py-3 text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Verificare IMEI
+              </Link>
+              <Link 
+                href="#how-it-works" 
+                className="block px-3 py-3 text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Cum funcționează
+              </Link>
+              <Link 
+                href="#pricing" 
+                className="block px-3 py-3 text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Prețuri
+              </Link>
+              <Link 
+                href="#about" 
+                className="block px-3 py-3 text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Despre noi
+              </Link>
+              <div className="pt-2">
+                <Link 
+                  href="#contact" 
+                  className="block px-3 py-3 text-white bg-gradient-to-r from-[#017AFF] to-blue-500 rounded-lg transition-all duration-300 text-sm font-medium hover:shadow-md hover:shadow-blue-500/20 active:scale-[0.98]"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Contact
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
