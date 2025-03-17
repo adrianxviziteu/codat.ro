@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Direct Stripe - Verificare IMEI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center justify-center">
+    <div class="max-w-md w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Test Direct Stripe</h1>
+            <p class="mt-2 text-gray-600">Acesta este un test direct pentru Stripe</p>
+        </div>
+
+        <div class="space-y-6">
+            <div>
+                <label for="imei" class="block text-sm font-medium text-gray-700">IMEI:</label>
+                <input type="text" id="imei" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" maxlength="15" pattern="\d{15}" title="IMEI-ul trebuie să conțină exact 15 cifre">
+                <p class="mt-1 text-xs text-gray-500">Trebuie să conțină exact 15 cifre</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Tip verificare:</label>
+                <div class="mt-2 space-y-3">
+                    <div class="flex items-center">
+                        <input type="radio" id="simple" name="type" value="simple" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                        <label for="simple" class="ml-3 block text-sm font-medium text-gray-700">Basic (3 LEI)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="pro" name="type" value="pro" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" checked>
+                        <label for="pro" class="ml-3 block text-sm font-medium text-gray-700">PRO (5 LEI)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button id="checkout-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Plătește și verifică direct
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-6 text-center">
+            <div class="text-xs text-gray-500">Pentru testare, poți folosi următoarele carduri:</div>
+            <div class="mt-2 text-sm text-gray-700">
+                <div class="p-2 bg-gray-50 rounded-md inline-block text-left">
+                    <div><strong>Card de succes:</strong> 4242 4242 4242 4242</div>
+                    <div><strong>Expiră:</strong> Orice dată viitoare</div>
+                    <div><strong>CVC:</strong> Orice 3 cifre</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Crează o instanță Stripe folosind cheia publică
+        const stripe = Stripe('pk_test_51QhqbjIm5aVYrrf064wVcLijvjdh36I7eqnxHgBNnpQjJClUyxzDnWYQDvvmCVRYXMQ1jBWnm9RtbYmkWNlFTqID00E6QnHSl3');
+        const checkoutButton = document.getElementById('checkout-button');
+
+        checkoutButton.addEventListener('click', function() {
+            const imei = document.getElementById('imei').value.trim();
+            if (!imei || imei.length !== 15 || !/^\d+$/.test(imei)) {
+                alert('IMEI-ul trebuie să conțină exact 15 cifre');
+                return;
+            }
+
+            const verificationType = document.querySelector('input[name="type"]:checked').value;
+            const serviceId = verificationType === 'simple' ? '205' : '281';
+            const amount = verificationType === 'simple' ? 300 : 500; // 3 sau 5 RON în bani
+            const productName = verificationType === 'simple' ? 'Verificare Simplă' : 'Verificare PRO';
+
+            // Crează un checkout session direct în browser folosind Stripe Checkout
+            stripe.redirectToCheckout({
+                lineItems: [{
+                    price_data: {
+                        currency: 'ron',
+                        product_data: {
+                            name: productName,
+                        },
+                        unit_amount: amount,
+                    },
+                    quantity: 1,
+                }],
+                mode: 'payment',
+                successUrl: window.location.origin + '/succes.html?imei=' + imei + '&serviceId=' + serviceId,
+                cancelUrl: window.location.origin + '/cancel_payment.html',
+            })
+            .then(function (result) {
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
