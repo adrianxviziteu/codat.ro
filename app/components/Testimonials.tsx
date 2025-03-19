@@ -5,7 +5,7 @@ import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
 export default function Testimonials() {
   return (
-    <section className="py-16 relative">
+    <section id="testimonials" className="py-16 relative">
       {/* No separate background div - we'll use the main site background */}
       
       <div className="relative z-10 container mx-auto px-4">
@@ -21,7 +21,7 @@ export default function Testimonials() {
         
         <div className="max-w-5xl mx-auto">
           {/* First row moving right */}
-          <div className="mb-6">
+          <div className="mb-2">
             <InfiniteMovingCards
               items={testimonials1}
               direction="right"
@@ -45,56 +45,56 @@ export default function Testimonials() {
 
 const testimonials1 = [
   {
-    quote: "Codat.ro mi-a salvat de atâtea ori când am vrut să verific autenticitatea unui număr de telefon. Serviciu excelent și rapid.",
+    quote: "Datorită Codat.ro am evitat să cumpăr un iPhone furat. Verificarea a durat doar 5 secunde și mi-a arătat imediat că telefonul era raportat ca pierdut.",
     name: "Maria Popescu",
-    title: "Client fidel",
+    title: "Student",
   },
   {
-    quote: "Interfața este intuitivă și verificarea numerelor de telefon este instantanee. Recomand tuturor care vor să evite fraudele telefonice.",
+    quote: "Interfața este super intuitivă, iar rezultatele verificării sunt instantanee. Am verificat 30 de telefoane într-o singură zi pentru magazinul nostru.",
     name: "Ion Ionescu",
-    title: "Antreprenor",
+    title: "Manager magazin mobile",
   },
   {
-    quote: "Suportul tehnic este excepțional. Echipa răspunde rapid și oferă soluții eficiente pentru orice problemă cu verificarea numerelor.",
+    quote: "Suportul tehnic răspunde în mai puțin de 5 minute. Am avut o întrebare despre un rezultat și am primit clarificări imediat.",
     name: "Ana Dumitrescu",
-    title: "Manager Servicii Clienți",
+    title: "Administrator OLX",
   },
   {
-    quote: "De când folosesc Codat.ro pentru verificarea numerelor de telefon, am redus incidentele de fraudă cu peste 60%.",
+    quote: "Ca reprezentant al poliției, folosim Codat.ro zilnic. Acuratețea verificărilor ne-a ajutat să recuperăm peste 200 de telefoane furate anul trecut.",
     name: "George Marinescu",
-    title: "Director Securitate",
+    title: "Ofițer de poliție",
   },
   {
-    quote: "O platformă modernă care face verificarea numerelor de telefon simplă și eficientă. Exact ce aveam nevoie pentru afacerea mea.",
+    quote: "Am verificat un iPhone înainte de a-l cumpăra de pe un site de anunțuri și am descoperit că avea iCloud blocat. M-ați salvat de o țeapă de 3000 lei!",
     name: "Elena Stanciu",
-    title: "Consultant Business",
+    title: "Client mulțumit",
   },
 ];
 
 const testimonials2 = [
   {
-    quote: "Verificarea automată a numerelor de telefon a fost o schimbare majoră pentru compania noastră. Mulțumim Codat.ro!",
+    quote: "Verificăm toate telefoanele second-hand cu Codat.ro înainte de a le achiziționa. Zero telefoane problematice de când folosim serviciul vostru!",
     name: "Cristian Radu",
-    title: "Director Operațional",
+    title: "Proprietar magazin second-hand",
   },
   {
-    quote: "Securitatea datelor și precizia verificărilor sunt impecabile. Codat.ro ne-a ajutat să identificăm numeroase încercări de fraudă.",
+    quote: "Rapiditatea serviciului e impresionantă. În mai puțin de 10 secunde primesc informații complete despre orice IMEI, inclusiv dacă telefonul e curat.",
     name: "Laura Munteanu",
-    title: "Manager de Securitate",
+    title: "Vânzător online",
   },
   {
-    quote: "Rapoartele generate după verificarea numerelor sunt clare și complete. Ne ajută să luăm decizii mai bune pentru protecția clienților.",
+    quote: "Am evitat o țeapă de 5000 lei când voiam să cumpăr un iPhone 14 Pro. Codat.ro a arătat că telefonul era blocat în baza de date globală.",
     name: "Alexandru Popa",
-    title: "Analist Date",
+    title: "Programator",
   },
   {
-    quote: "Integrarea cu sistemele noastre a fost simplă, iar acum toate numerele de telefon sunt verificate automat. O experiență excelentă!",
+    quote: "Ca service autorizat, verificăm zilnic zeci de telefoane cu Codat.ro. Interfața rapidă și API-ul vostru ne-au simplificat enorm procesele.",
     name: "Sofia Dumitru",
-    title: "Manager IT",
+    title: "Manager service GSM",
   },
   {
-    quote: "Prețul este competitiv pentru funcționalitățile de verificare oferite. O investiție excelentă pentru siguranța companiei.",
+    quote: "Prețul abonamentului e nimic pe lângă valoarea telefonului pe care l-aș fi cumpărat dacă nu verificam IMEI-ul. Cel mai bun serviciu de verificare din România!",
     name: "Mihai Constantinescu",
-    title: "Director de Dezvoltare",
+    title: "Antreprenor",
   },
 ]; 

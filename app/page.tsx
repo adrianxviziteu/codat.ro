@@ -4,6 +4,8 @@ import Footer from './components/Footer';
 import Pricing from './components/Pricing';
 import Testimonials from './components/Testimonials';
 import CtaOverlap from './components/CtaOverlap';
+import Features2 from './components/Features2';
+import WorldMapDemo from './components/ui/world-map-demo';
 
 export default function Home() {
   return (
@@ -19,7 +21,8 @@ export default function Home() {
       <div className="relative z-10">
         <Navbar />
         <Hero />
-        <Pricing />
+        <Features2 />
+        <WorldMapDemo />
         <Testimonials />
         
         {/* CTA secțiune care se suprapune peste footer */}

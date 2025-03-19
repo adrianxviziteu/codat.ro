@@ -75,10 +75,10 @@ export default function Hero() {
   ];
 
   return (
-    <>
-      <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+    <section className="relative pt-8 sm:pt-12 pb-16">
+      <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-8 sm:pt-12">
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -173,7 +173,7 @@ export default function Hero() {
                 </div>
 
                 {/* Recent Users Section */}
-                <div className="mt-6">
+                <div className="mt-2">
                   <div className="flex items-center justify-center gap-1">
                     <div className="flex -space-x-3">
                       {testimonials.map((user, index) => (
@@ -181,15 +181,15 @@ export default function Hero() {
                           key={index}
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.8 + index * 0.1 }}
+                          transition={{ delay: 0.8 + index * 0.2, duration: 1.2 }}
                           className="relative group"
                         >
                           <img
                             src={user.avatar}
                             alt={user.name}
-                            className="w-8 h-8 rounded-full border-2 border-white shadow-sm"
+                            className="w-7 h-7 rounded-full border-2 border-white shadow-sm"
                           />
-                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-0.5 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-0.5 px-2 py-0.5 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
                             {user.name}
                             <br />
                             <span className="text-gray-400 text-xs">{user.time}</span>
@@ -200,6 +200,72 @@ export default function Hero() {
                     <div className="text-sm text-gray-600 ml-1">
                       <div className="flex items-center">
                         <span className="font-semibold">2,543</span>&nbsp;verificări în ultima săptămână
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* IMEI Guide */}
+                  <div className="mt-1 text-center">
+                    <button
+                      type="button"
+                      className="group inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors bg-gray-50 hover:bg-blue-50 px-3 py-1.5 rounded-full"
+                      onClick={() => document.getElementById('imei-guide')?.classList.toggle('hidden')}
+                    >
+                      <svg 
+                        className="w-4 h-4 mr-1.5 group-hover:text-blue-600" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth="2" 
+                          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      Unde găsesc IMEI-ul?
+                    </button>
+
+                    <div id="imei-guide" className="hidden mt-1 bg-white/80 backdrop-blur-sm rounded-xl p-1 shadow-lg border border-gray-200/50">
+                      <div className="flex items-center justify-between">
+                        {/* Pas 1 */}
+                        <div className="flex flex-col items-center p-1 bg-blue-50/50 rounded-lg">
+                          <div className="flex-shrink-0 w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span className="text-[10px] font-bold text-blue-600">1</span>
+                          </div>
+                          <p className="text-[10px] font-medium text-gray-900 text-center">Setări și General</p>
+                        </div>
+
+                        {/* Săgeată 1 */}
+                        <div className="flex items-center px-0.5">
+                          <svg className="w-2.5 h-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+
+                        {/* Pas 2 */}
+                        <div className="flex flex-col items-center p-1 bg-blue-50/50 rounded-lg">
+                          <div className="flex-shrink-0 w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span className="text-[10px] font-bold text-blue-600">2</span>
+                          </div>
+                          <p className="text-[10px] font-medium text-gray-900 text-center">Apasă pe Informații</p>
+                        </div>
+
+                        {/* Săgeată 2 */}
+                        <div className="flex items-center px-0.5">
+                          <svg className="w-2.5 h-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+
+                        {/* Pas 3 */}
+                        <div className="flex flex-col items-center p-1 bg-blue-50/50 rounded-lg">
+                          <div className="flex-shrink-0 w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span className="text-[10px] font-bold text-blue-600">3</span>
+                          </div>
+                          <p className="text-[10px] font-medium text-gray-900 text-center">Derulează până la IMEI</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -769,6 +835,6 @@ export default function Hero() {
           )}
         </AnimatePresence>
       </div>
-    </>
+    </section>
   );
 }

@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function CtaOverlap() {
   return (
-    <div className="relative z-20 max-w-6xl mx-auto px-4 -mb-40">
+    <div id="contact" className="relative z-20 max-w-6xl mx-auto px-4 -mb-40">
       <div className="bg-gray-900 rounded-xl p-8 sm:p-12 overflow-hidden relative text-center shadow-2xl">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>

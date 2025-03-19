@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +32,16 @@ export default function Navbar() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [isMenuOpen]);
 
+  const scrollToSection = (id: string) => {
+    setIsMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      const yOffset = -80; // Ajustare pentru a ține cont de înălțimea navbar-ului
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({top: y, behavior: 'smooth'});
+    }
+  };
+
   const menuVariants = {
     closed: {
       opacity: 0,
@@ -49,13 +60,16 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled 
+        ? 'bg-white/50 backdrop-blur-sm shadow-sm py-2' 
+        : 'bg-white py-3'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 sm:h-20">
-          <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0 flex items-center">
+        <div className="flex items-center justify-between">
+          {/* Logo - În stânga */}
+          <div className="flex-shrink-0">
+            <Link href="/" className="flex items-center">
               <motion.span 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -65,137 +79,103 @@ export default function Navbar() {
               </motion.span>
             </Link>
           </div>
-          
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="flex space-x-8"
+
+          {/* Navigation Links - Centrate */}
+          <div className="hidden md:flex items-center justify-center space-x-8 flex-grow mx-10">
+            <button 
+              onClick={() => scrollToSection('features')} 
+              className="text-sm font-medium text-gray-600 hover:text-[#017AFF] transition-colors"
             >
-              <Link 
-                href="#features" 
-                className="text-gray-600 hover:text-[#017AFF] transition-colors text-sm font-medium relative group"
-              >
-                Verificare IMEI
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
-              </Link>
-              <Link 
-                href="#how-it-works" 
-                className="text-gray-600 hover:text-[#017AFF] transition-colors text-sm font-medium relative group"
-              >
-                Cum funcționează
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
-              </Link>
-              <Link 
-                href="#pricing" 
-                className="text-gray-600 hover:text-[#017AFF] transition-colors text-sm font-medium relative group"
-              >
-                Prețuri
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
-              </Link>
-              <Link 
-                href="#about" 
-                className="text-gray-600 hover:text-[#017AFF] transition-colors text-sm font-medium relative group"
-              >
-                Despre noi
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
-              </Link>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              Caracteristici
+            </button>
+            <button 
+              onClick={() => scrollToSection('testimonials')} 
+              className="text-sm font-medium text-gray-600 hover:text-[#017AFF] transition-colors"
             >
-              <Link 
-                href="/contact" 
-                className="bg-gradient-to-r from-[#017AFF] to-blue-500 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 active:scale-95 transition-all duration-300 text-sm font-medium"
-              >
-                Contact
-              </Link>
-            </motion.div>
+              Testimoniale
+            </button>
+            <button 
+              onClick={() => scrollToSection('sticky-scroll')} 
+              className="text-sm font-medium text-gray-600 hover:text-[#017AFF] transition-colors"
+            >
+              Cum verificăm
+            </button>
+            <button 
+              onClick={() => scrollToSection('contact')} 
+              className="text-sm font-medium text-gray-600 hover:text-[#017AFF] transition-colors"
+            >
+              Contact
+            </button>
+          </div>
+
+          {/* Login Button - În dreapta */}
+          <div className="hidden md:block">
+            <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#017AFF] hover:bg-blue-600 transition-colors">
+              Login
+            </button>
           </div>
 
           {/* Mobile menu button */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="md:hidden flex items-center"
-          >
+          <div className="md:hidden">
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsMenuOpen(!isMenuOpen);
-              }}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-[#017AFF] focus:outline-none transition-colors"
-              aria-label="Toggle menu"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#017AFF]"
             >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
+              <span className="sr-only">Deschide meniul</span>
+              {!isMobileMenuOpen ? (
+                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+                </svg>
+              ) : (
+                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
             </button>
-          </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
-        {isMenuOpen && (
+        {isMobileMenuOpen && (
           <motion.div
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={menuVariants}
-            className="md:hidden bg-white/95 backdrop-blur-md shadow-lg rounded-b-xl border-t border-gray-100"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden bg-white/95 backdrop-blur-sm"
           >
-            <div className="px-4 pt-2 pb-4 space-y-1">
-              <Link 
-                href="#features" 
-                className="block px-3 py-3 text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium"
-                onClick={() => setIsMenuOpen(false)}
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              <button
+                onClick={() => scrollToSection('features')}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 transition-colors"
               >
-                Verificare IMEI
-              </Link>
-              <Link 
-                href="#how-it-works" 
-                className="block px-3 py-3 text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium"
-                onClick={() => setIsMenuOpen(false)}
+                Caracteristici
+              </button>
+              <button
+                onClick={() => scrollToSection('testimonials')}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 transition-colors"
               >
-                Cum funcționează
-              </Link>
-              <Link 
-                href="#pricing" 
-                className="block px-3 py-3 text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium"
-                onClick={() => setIsMenuOpen(false)}
+                Testimoniale
+              </button>
+              <button
+                onClick={() => scrollToSection('sticky-scroll')}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 transition-colors"
               >
-                Prețuri
-              </Link>
-              <Link 
-                href="#about" 
-                className="block px-3 py-3 text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium"
-                onClick={() => setIsMenuOpen(false)}
+                Cum verificăm
+              </button>
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 transition-colors"
               >
-                Despre noi
-              </Link>
-              <div className="pt-2">
-                <Link 
-                  href="/contact" 
-                  className="block px-3 py-3 text-white bg-gradient-to-r from-[#017AFF] to-blue-500 rounded-lg transition-all duration-300 text-sm font-medium hover:shadow-md hover:shadow-blue-500/20 active:scale-[0.98]"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Contact
-                </Link>
-              </div>
+                Contact
+              </button>
+              <button
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-[#017AFF] hover:bg-blue-600 transition-colors mt-3"
+              >
+                Login
+              </button>
             </div>
           </motion.div>
         )}
