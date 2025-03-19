@@ -109,7 +109,7 @@ export default function Navbar() {
               transition={{ delay: 0.2 }}
             >
               <Link 
-                href="#contact" 
+                href="/contact" 
                 className="bg-gradient-to-r from-[#017AFF] to-blue-500 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 active:scale-95 transition-all duration-300 text-sm font-medium"
               >
                 Contact
@@ -189,7 +189,7 @@ export default function Navbar() {
               </Link>
               <div className="pt-2">
                 <Link 
-                  href="#contact" 
+                  href="/contact" 
                   className="block px-3 py-3 text-white bg-gradient-to-r from-[#017AFF] to-blue-500 rounded-lg transition-all duration-300 text-sm font-medium hover:shadow-md hover:shadow-blue-500/20 active:scale-[0.98]"
                   onClick={() => setIsMenuOpen(false)}
                 >

@@ -2,8 +2,8 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import Pricing from './components/Pricing';
-import LogoCloud from './components/LogoCloud';
-import TypewriterEffectSmoothDemo from './components/ui/typewriter-effect-demo-1';
+import Testimonials from './components/Testimonials';
+import CtaOverlap from './components/CtaOverlap';
 
 export default function Home() {
   return (
@@ -19,17 +19,18 @@ export default function Home() {
       <div className="relative z-10">
         <Navbar />
         <Hero />
-        <LogoCloud />
         <Pricing />
-        <div className="bg-gray-900 py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10"></div>
-          <div className="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
-          <div className="relative z-10">
-            <TypewriterEffectSmoothDemo />
-          </div>
+        <Testimonials />
+        
+        {/* CTA secțiune care se suprapune peste footer */}
+        <div className="pt-20 bg-transparent">
+          <CtaOverlap />
         </div>
-        <Footer />
+        
+        {/* Footer cu padding suplimentar pentru overlap */}
+        <div className="pt-28">
+          <Footer />
+        </div>
       </div>
     </main>
   );

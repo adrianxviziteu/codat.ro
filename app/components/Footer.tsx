@@ -1,9 +1,24 @@
 'use client';
 
+import Image from 'next/image';
+
 interface SVGProps extends React.SVGProps<SVGSVGElement> {
   title?: string;
   titleId?: string;
 }
+
+// Dot Pattern Component
+const DotPattern = ({ className }: { className?: string }) => {
+  return (
+    <div className={className || "absolute inset-0 opacity-15"}>
+      <div className="absolute inset-0 [mask-image:linear-gradient(to_bottom_right,white,white_50%,transparent)]" 
+      style={{
+        backgroundSize: "28px 28px",
+        backgroundImage: "radial-gradient(circle, #3b82f6 1px, transparent 1px)"
+      }} />
+    </div>
+  );
+};
 
 export default function Footer() {
   const navigation = {
@@ -73,6 +88,7 @@ export default function Footer() {
     <>
       <footer className="bg-black relative overflow-hidden" aria-labelledby="footer-heading">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20"></div>
+        <DotPattern className="absolute inset-0 opacity-10" />
         
         <h2 id="footer-heading" className="sr-only">
           Footer
@@ -80,7 +96,15 @@ export default function Footer() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 pb-8 pt-12 sm:px-6 sm:pb-12 sm:pt-16 lg:px-8 lg:pt-24">
           <div className="xl:grid xl:grid-cols-3 xl:gap-8">
             <div className="space-y-6 sm:space-y-8">
-              <span className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#017AFF] to-blue-400">VerifyPro</span>
+              <div>
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  width={150}
+                  height={40}
+                  className="h-8 w-auto"
+                />
+              </div>
               <div className="text-xs sm:text-sm leading-6 text-gray-300">
                 Verificarea IMEI-ului iPhone simplu și rapid, pentru achiziții sigure.
               </div>

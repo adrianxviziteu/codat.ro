@@ -123,6 +123,55 @@
         .step-transition {
             transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        
+        /* DaisyUI mockup-phone styles */
+        .mockup-phone {
+            display: inline-block;
+            position: relative;
+            border: 8px solid;
+            border-radius: 40px;
+            overflow: hidden;
+            margin: 0 auto;
+            max-width: 260px;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .mockup-phone {
+                max-width: 220px;
+            }
+            .mockup-phone-display {
+                height: 450px;
+            }
+        }
+        
+        .mockup-phone-camera {
+            position: absolute;
+            width: 100px;
+            height: 26px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #000;
+            border-radius: 0 0 16px 16px;
+            z-index: 11;
+        }
+        
+        .mockup-phone-display {
+            overflow: hidden;
+            background-color: #000;
+            position: relative;
+            aspect-ratio: 9/19.5;
+            height: 520px;
+            width: 100%;
+        }
+        
+        .mockup-phone-display img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -134,7 +183,7 @@
         <div class="absolute -bottom-32 left-1/3 w-72 h-72 bg-blue-100 rounded-full blur-3xl opacity-20"></div>
         
         <!-- Payment animation -->
-        <div class="relative z-10 w-64 h-64 flex items-center justify-center">
+        <div id="card-payment-container" class="relative z-10 w-64 h-64 flex items-center justify-center">
             <!-- Card sliding animation -->
             <div class="absolute w-48 h-32 bg-gradient-to-br from-[#2563EB] to-[#4F46E5] rounded-xl shadow-xl animate-card-slide flex flex-col justify-between p-4 overflow-hidden">
                 <div class="card-shine"></div>
@@ -175,147 +224,508 @@
         </div>
 
         <!-- Steps loader (initially hidden) -->
-        <div class="absolute inset-0 flex items-center justify-center hidden" id="loading-steps-container">
-            <div class="h-96 relative">
-                <div class="flex relative justify-start max-w-xl flex-col mt-40" id="loader-steps-container">
+        <div id="loading-steps-container" class="fixed inset-0 z-40 flex items-center justify-center hidden">
+            <div class="h-96 w-full max-w-xl relative flex justify-center items-center">
+                <div class="flex flex-col" id="loader-steps-container">
                     <!-- Loader steps will be added here by JavaScript -->
                 </div>
-                <div class="bg-gradient-to-t inset-x-0 z-20 bottom-0 h-full absolute" style="mask-image: radial-gradient(900px at center, transparent 30%, white 100%)"></div>
             </div>
         </div>
     </div>
 
     <!-- Content (initially hidden) -->
     <div id="content-container" class="opacity-0 transition-opacity duration-500">
-        <div class="max-w-4xl w-full mx-auto p-6">
-            <!-- Header -->
-            <div class="text-center mb-8 pt-8">
-                <div class="flex justify-center mb-6">
-                    <div class="relative w-24 h-24 animate-pulse-slow">
-                        <div class="absolute inset-0 bg-green-100 rounded-full shadow-lg shadow-green-100"></div>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path class="animate-checkmark" d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                        </div>
+        <!-- Navbar -->
+        <nav class="bg-white shadow-sm sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <a href="/" class="flex-shrink-0 flex items-center">
+                            <img class="h-8 w-auto" src="../logo.png" alt="Codat.ro">
+                            <span class="ml-2 text-xl font-semibold text-gray-900">Codat.ro</span>
+                        </a>
                     </div>
-                </div>
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">Verificare finalizată cu succes!</h1>
-                <p class="text-gray-600 text-lg">Plata a fost procesată și informațiile sunt acum disponibile.</p>
-                <div class="mt-6 inline-flex items-center justify-center px-6 py-3 bg-blue-50 border border-blue-100 rounded-full shadow-sm">
-                    <span class="text-base font-medium text-[#017AFF]">IMEI: <span class="font-mono" id="imei-display">-</span> • <span id="service-type-display">-</span></span>
+                    <div class="flex items-center">
+                        <a href="/" class="inline-flex items-center px-4 py-2 text-sm font-medium text-[#017AFF] hover:text-blue-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-14 0l2 2m0 0l7 7 7-7m-14 0l2-2" />
+                            </svg>
+                            Verifică alt IMEI
+                        </a>
+                    </div>
                 </div>
             </div>
+        </nav>
 
-            <!-- Results Container -->
-            <div id="results-grid" class="space-y-6">
-                <!-- Status activare & iCloud -->
-                <div class="flex items-start space-x-4 p-6 rounded-xl bg-white shadow-md border border-gray-100 transition-all hover:shadow-lg fade-in">
-                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                        <svg class="w-7 h-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="text-lg font-medium text-gray-900">Status activare & iCloud</h3>
-                        <p class="text-green-600 font-medium text-lg mt-1">
-                            Activat • <span class='text-green-600'>iCloud CLEAN</span>
+        <!-- Hero section -->
+        <div class="relative overflow-hidden bg-gradient-to-b from-blue-50 to-white">
+            <!-- Decorative circles -->
+            <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
+            <div class="absolute top-1/3 -right-32 w-80 h-80 bg-blue-300 rounded-full blur-3xl opacity-20"></div>
+            <div class="absolute -bottom-32 left-1/3 w-72 h-72 bg-blue-100 rounded-full blur-3xl opacity-20"></div>
+            
+            <!-- Grid pattern -->
+            <div class="absolute inset-0 bg-grid-blue-600/[0.03] bg-[size:20px_20px]"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
+                <div class="flex flex-col items-center gap-12">
+                    <!-- Text Content - Centered -->
+                    <div class="relative z-10 text-center max-w-3xl mx-auto">
+                        <div class="inline-flex items-center px-4 py-2 bg-blue-100/50 text-[#017AFF] rounded-full mb-6 backdrop-blur-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="font-medium">Verificare Completă</span>
+                        </div>
+                        
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
+                            Verificarea pentru <span class="text-[#017AFF] relative">
+                                <span id="device-model-hero">iPhone</span>
+                                <span class="absolute bottom-0 left-0 w-full h-1 bg-blue-200 rounded-full"></span>
+                            </span> este gata!
+                        </h1>
+                        
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                            Toate informațiile despre dispozitivul tău sunt disponibile mai jos. 
+                            Am verificat status-ul iCloud, garanția și multe alte detalii importante.
                         </p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 mb-8 justify-center">
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-[#017AFF]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">IMEI</div>
+                                    <div class="font-mono font-medium" id="imei-hero">-</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-[#017AFF]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">Status iCloud</div>
+                                    <div class="font-medium text-green-600" id="icloud-status-hero">CLEAN</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="document.getElementById('results-grid').scrollIntoView({behavior: 'smooth', block: 'start'})" class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-[#017AFF] text-white font-medium rounded-xl shadow hover:shadow-md hover:from-blue-600 hover:to-blue-700 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            Vezi toate detaliile
+                        </button>
                     </div>
+                    
+                    <!-- Phone Mockup - Below Text -->
+                    <div class="relative flex justify-center">
+                        <!-- DaisyUI Phone Mockup -->
+                        <div class="mockup-phone border-primary">
+                            <div class="mockup-phone-camera"></div>
+                            <div class="mockup-phone-display">
+                                <img alt="wallpaper" src="https://img.daisyui.com/images/stock/453966.webp"/>
+                            </div>
+                        </div>
+                        
+                        <!-- Decorative circles -->
+                        <div class="absolute top-10 -right-20 w-40 h-40 border border-blue-200 rounded-full"></div>
+                        <div class="absolute -top-10 -right-10 w-20 h-20 border border-blue-200 rounded-full"></div>
+                        <div class="absolute bottom-20 -left-10 w-32 h-32 border border-blue-100 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-4xl w-full mx-auto p-6">
+            <!-- Results Container -->
+            <div id="results-grid" class="space-y-8">
+                <!-- Heading pentru secțiunea de rezultate -->
+                <div class="text-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-900 inline-block relative">
+                        Rezultatele verificării
+                        <div class="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-blue-100 via-[#017AFF] to-blue-100 rounded-full"></div>
+                    </h2>
+                </div>
+
+                <!-- Status activare & iCloud -->
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-100 fade-in relative">
+                    <!-- Card topper color -->
+                    <div class="h-1.5 w-full bg-gradient-to-r from-blue-400 to-[#017AFF]"></div>
+                    
+                    <div class="p-6 sm:p-8">
+                        <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+                            <div class="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-[#017AFF] flex items-center justify-center shadow-lg shadow-blue-100 mx-auto sm:mx-0">
+                                <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 text-center sm:text-left">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2 flex items-center justify-center sm:justify-start">
+                                    <span>Status activare & iCloud</span>
+                                    <span class="ml-2 px-2 py-1 text-xs font-medium uppercase rounded-full bg-blue-50 text-[#017AFF]">Esențial</span>
+                                </h3>
+                                <p class="text-green-600 font-semibold text-lg mb-2">
+                                    Activat • <span class='text-green-600'>iCloud CLEAN</span>
+                                </p>
+                                <p class="text-gray-500 text-sm">
+                                    Un dispozitiv cu iCloud CLEAN poate fi utilizat fără restricții și nu este blocat de fostul proprietar.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative circle -->
+                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-blue-100 rounded-full opacity-20 transition-all duration-300 group-hover:scale-150"></div>
                 </div>
 
                 <!-- Verificare garanție -->
-                <div class="flex items-start space-x-4 p-6 rounded-xl bg-white shadow-md border border-gray-100 transition-all hover:shadow-lg fade-in" style="animation-delay: 100ms;">
-                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                        <svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                        </svg>
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-100 fade-in relative">
+                    <!-- Card topper color -->
+                    <div class="h-1.5 w-full bg-gradient-to-r from-blue-400 to-indigo-600"></div>
+                    
+                    <div class="p-6 sm:p-8">
+                        <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+                            <div class="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-100 mx-auto sm:mx-0">
+                                <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 text-center sm:text-left">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2 flex items-center justify-center sm:justify-start">
+                                    <span>Garanție</span>
+                                </h3>
+                                <p class="text-blue-600 font-semibold text-lg mb-2">
+                                    Status: <span class="text-blue-600">Activă</span> • Zile rămase: 132
+                                </p>
+                                <div class="mb-3 bg-gray-100 h-2.5 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full" style="width: 36%"></div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 rounded-full bg-blue-600 mr-2"></div>
+                                        <span class="text-gray-600">Suport tehnic: <span class="font-medium text-blue-600">DISPONIBIL</span></span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 rounded-full bg-blue-600 mr-2"></div>
+                                        <span class="text-gray-600">Servicii reparații: <span class="font-medium text-blue-600">DISPONIBIL</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex-1">
-                        <h3 class="text-lg font-medium text-gray-900">Garanție</h3>
-                        <p class="text-blue-600 font-medium text-lg mt-1">
-                            Status: Activă • Zile rămase: 132
-                        </p>
-                        <p class="text-gray-600 mt-1">
-                            Suport tehnic: <span class="font-medium text-blue-600">DISPONIBIL</span> • 
-                            Servicii reparații: <span class="font-medium text-blue-600">DISPONIBIL</span>
-                        </p>
-                    </div>
+                    
+                    <!-- Decorative circle -->
+                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-indigo-100 rounded-full opacity-20 transition-all duration-300 group-hover:scale-150"></div>
                 </div>
 
                 <!-- MDM și Blacklist Status -->
-                <div class="flex items-start space-x-4 p-6 rounded-xl bg-white shadow-md border border-gray-100 transition-all hover:shadow-lg fade-in" style="animation-delay: 200ms;">
-                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                        <svg class="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="text-lg font-medium text-gray-900">Stare blocaje</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2">
-                            <div class="bg-green-50 rounded-lg px-3 py-2 border border-green-100">
-                                <p class="font-medium text-green-600">
-                                    MDM: INACTIV
-                                </p>
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-100 fade-in relative">
+                    <!-- Card topper color -->
+                    <div class="h-1.5 w-full bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                    
+                    <div class="p-6 sm:p-8">
+                        <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+                            <div class="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-100 mx-auto sm:mx-0">
+                                <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
                             </div>
-                            <div class="bg-green-50 rounded-lg px-3 py-2 border border-green-100">
-                                <p class="font-medium text-green-600">
-                                    Blacklist: NU
-                                </p>
-                            </div>
-                            <div class="bg-green-50 rounded-lg px-3 py-2 border border-green-100">
-                                <p class="font-medium text-green-600">
-                                    SIM lock: LIBER
+                            <div class="flex-1 text-center sm:text-left">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3 flex items-center justify-center sm:justify-start">
+                                    <span>Stare blocaje</span>
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                                    <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl px-4 py-3 border border-green-100 flex flex-col items-center md:items-start">
+                                        <span class="text-xs uppercase text-green-700 font-medium mb-1">MDM</span>
+                                        <p class="font-bold text-green-600">
+                                            INACTIV
+                                        </p>
+                                    </div>
+                                    <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl px-4 py-3 border border-green-100 flex flex-col items-center md:items-start">
+                                        <span class="text-xs uppercase text-green-700 font-medium mb-1">Blacklist</span>
+                                        <p class="font-bold text-green-600">
+                                            NU
+                                        </p>
+                                    </div>
+                                    <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl px-4 py-3 border border-green-100 flex flex-col items-center md:items-start">
+                                        <span class="text-xs uppercase text-green-700 font-medium mb-1">SIM lock</span>
+                                        <p class="font-bold text-green-600">
+                                            LIBER
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-500 text-sm flex items-center justify-center sm:justify-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Dispozitiv compatibil cu operatorul: <span class="font-medium text-gray-700">Toate</span>
                                 </p>
                             </div>
                         </div>
-                        <p class="text-gray-600 mt-3">
-                            Operator: <span class="font-medium">Toate</span>
-                        </p>
                     </div>
+                    
+                    <!-- Decorative circle -->
+                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-purple-100 rounded-full opacity-20 transition-all duration-300 group-hover:scale-150"></div>
                 </div>
 
                 <!-- Info model -->
-                <div class="flex items-start space-x-4 p-6 rounded-xl bg-white shadow-md border border-gray-100 transition-all hover:shadow-lg fade-in" style="animation-delay: 300ms;">
-                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <svg class="w-7 h-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <h3 class="text-lg font-medium text-gray-900">Informații dispozitiv</h3>
-                        <p class="text-indigo-600 font-medium text-lg mt-1" id="device-model">iPhone 13 Pro Max 256GB Gold (A2643)</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-                            <div class="bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
-                                <p class="text-gray-700">
-                                    <span class="font-medium">IMEI:</span> 
-                                    <span class="font-mono" id="imei-info">-</span>
-                                </p>
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-100 fade-in relative">
+                    <!-- Card topper color -->
+                    <div class="h-1.5 w-full bg-gradient-to-r from-indigo-400 to-indigo-600"></div>
+                    
+                    <div class="p-6 sm:p-8">
+                        <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+                            <div class="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-100 mx-auto sm:mx-0">
+                                <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
                             </div>
-                            <div class="bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
-                                <p class="text-gray-700">
-                                    <span class="font-medium">Serial:</span> 
-                                    <span class="font-mono">C7QD9P0TN6XR</span>
-                                </p>
+                            <div class="flex-1 text-center sm:text-left">
+                                <h3 class="text-xl font-bold text-gray-900 mb-3 flex items-center justify-center sm:justify-start">
+                                    <span>Informații dispozitiv</span>
+                                </h3>
+                                <p class="text-indigo-600 font-semibold text-lg mb-4" id="device-model">iPhone 13 Pro Max 256GB Gold (A2643)</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl px-4 py-3 border border-gray-200">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-500 font-medium">IMEI:</span>
+                                            <span class="font-mono font-medium text-gray-800" id="imei-info">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl px-4 py-3 border border-gray-200">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-500 font-medium">Serial:</span>
+                                            <span class="font-mono font-medium text-gray-800">C7QD9P0TN6XR</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-center sm:justify-start text-gray-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="font-medium">Data estimată achiziție:</span>
+                                    <span class="ml-2">05-04-2023</span>
+                                </div>
                             </div>
                         </div>
-                        <p class="text-gray-600 mt-3">
-                            <span class="font-medium">Data estimată achiziție:</span> 05-04-2023
-                        </p>
                     </div>
+                    
+                    <!-- Decorative circle -->
+                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-indigo-100 rounded-full opacity-20 transition-all duration-300 group-hover:scale-150"></div>
                 </div>
             </div>
 
             <!-- Acțiuni -->
-            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-                <a href="/" class="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl text-white bg-[#017AFF] hover:bg-blue-700 shadow-md hover:shadow-lg transition-all">
+            <div class="mt-14 mb-20 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/" class="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-blue-500 to-[#017AFF] hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg transition-all">
                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-14 0l2 2m0 0l7 7 7-7m-14 0l2-2" />
                     </svg>
                     Verifică alt IMEI
                 </a>
+                
+                <button id="download-pdf" class="inline-flex items-center justify-center px-6 py-4 border border-[#017AFF] text-base font-medium rounded-xl text-[#017AFF] bg-white hover:bg-blue-50 shadow-md hover:shadow-lg transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Descarcă raport PDF
+                </button>
             </div>
         </div>
+        
+        <!-- Footer -->
+        <footer class="bg-black relative overflow-hidden" aria-labelledby="footer-heading">
+            <div class="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20"></div>
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom_right,white,white_50%,transparent)]" 
+                style="
+                    background-size: 28px 28px;
+                    background-image: radial-gradient(circle, #3b82f6 1px, transparent 1px);
+                "></div>
+            </div>
+            
+            <h2 id="footer-heading" class="sr-only">
+                Footer
+            </h2>
+            <div class="relative z-10 mx-auto max-w-7xl px-4 pb-8 pt-12 sm:px-6 sm:pb-12 sm:pt-16 lg:px-8 lg:pt-24">
+                <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+                    <div class="space-y-6 sm:space-y-8">
+                        <div>
+                            <img
+                                src="../logo.png"
+                                alt="Logo"
+                                class="h-8 w-auto"
+                            />
+                        </div>
+                        <div class="text-xs sm:text-sm leading-6 text-gray-300">
+                            Verificarea IMEI-ului iPhone simplu și rapid, pentru achiziții sigure.
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="inline-flex items-center text-xs sm:text-sm text-gray-300">
+                                <span class="mr-2 relative flex h-2.5 w-2.5 sm:h-3 sm:w-3">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-green-500"></span>
+                                </span>
+                                Toate serverele sunt online
+                            </span>
+                        </div>
+                        <div class="flex space-x-4 sm:space-x-6">
+                            <a href="#" class="text-gray-400 hover:text-[#017AFF] hover:-translate-y-1 transition-all duration-300">
+                                <span class="sr-only">Facebook</span>
+                                <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-[#017AFF] hover:-translate-y-1 transition-all duration-300">
+                                <span class="sr-only">Instagram</span>
+                                <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-[#017AFF] hover:-translate-y-1 transition-all duration-300">
+                                <span class="sr-only">Twitter</span>
+                                <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-12 grid grid-cols-2 gap-4 sm:gap-8 xl:col-span-2 xl:mt-0">
+                        <div class="grid grid-cols-1 gap-4 sm:gap-8 md:grid-cols-2">
+                            <div>
+                                <h3 class="text-xs sm:text-sm font-semibold leading-6 text-[#017AFF]">Soluții</h3>
+                                <ul role="list" class="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Verificare IMEI</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Verificare iCloud</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Verificare Garanție</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Verificare Blacklist</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mt-8 md:mt-0">
+                                <h3 class="text-xs sm:text-sm font-semibold leading-6 text-[#017AFF]">Suport</h3>
+                                <ul role="list" class="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Documentație</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Ghiduri</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Status API</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Contact Suport</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:gap-8 md:grid-cols-2">
+                            <div>
+                                <h3 class="text-xs sm:text-sm font-semibold leading-6 text-[#017AFF]">Companie</h3>
+                                <ul role="list" class="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Despre Noi</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Blog</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Cariere</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Parteneri</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mt-8 md:mt-0">
+                                <h3 class="text-xs sm:text-sm font-semibold leading-6 text-[#017AFF]">Legal</h3>
+                                <ul role="list" class="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Termeni și Condiții</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Politica de Confidențialitate</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-xs sm:text-sm leading-6 text-gray-300 hover:text-white relative group">
+                                            <span class="relative z-10">Politica de Cookie-uri</span>
+                                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#017AFF] group-hover:w-full transition-all duration-300"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12 border-t border-gray-900/10 pt-6 sm:mt-16 sm:pt-8 lg:mt-20">
+                    <div class="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+                        <div class="text-[10px] sm:text-xs leading-5 text-gray-400">
+                            &copy; <script>document.write(new Date().getFullYear())</script> VerifyPro. Toate drepturile rezervate.
+                        </div>
+                        <div class="text-[10px] sm:text-xs leading-5 text-gray-400">
+                            Made with <span class="text-red-500">❤️</span> in <span class="text-blue-500">Ro</span><span class="text-yellow-500">mâ</span><span class="text-red-500">nia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script>
@@ -344,26 +754,16 @@
         // Funcția pentru a afișa pașii de încărcare
         function renderLoaderSteps(currentState) {
             const container = document.getElementById('loader-steps-container');
+            if (!container) {
+                console.error('Container pentru pași nu a fost găsit!');
+                return;
+            }
+            
             container.innerHTML = '';
             
             loadingStates.forEach((state, index) => {
-                const distance = Math.abs(index - currentState);
-                const opacity = Math.max(1 - distance * 0.25, 0);
-                
                 const stepElement = document.createElement('div');
                 stepElement.className = 'text-left flex gap-3 mb-5 step-transition';
-                stepElement.style.opacity = opacity;
-                
-                // Calculăm transformarea pentru a face mișcarea mai smooth
-                let yTransform = -(currentState * 45);
-                
-                // Adăugăm un efect elastic pentru elementele care intră în viewport
-                if (index >= currentState - 1 && index <= currentState + 1) {
-                    const elasticFactor = index === currentState ? 1.03 : 1;
-                    stepElement.style.transform = `translateY(${yTransform}px) scale(${elasticFactor})`;
-                } else {
-                    stepElement.style.transform = `translateY(${yTransform}px)`;
-                }
                 
                 // Icon div
                 const iconDiv = document.createElement('div');
@@ -381,8 +781,36 @@
             });
         }
 
+        // Funcție pentru a aștepta un anumit timp
+        function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Funcția principală pentru animația pașilor
+        async function startLoadingSteps(imei, serviceId) {
+            console.log('Începe animația pașilor...');
+            let currentState = 0;
+            
+            while (currentState < loadingStates.length) {
+                console.log('Rendering step:', currentState);
+                renderLoaderSteps(currentState);
+                await wait(1500); // Așteaptă 1.5 secunde între pași
+                currentState++;
+            }
+            
+            // După ce toate animațiile sunt complete, afișează conținutul principal
+            await wait(1000);
+            document.getElementById('loading-overlay').style.opacity = '0';
+            document.getElementById('content-container').style.opacity = '1';
+            
+            await wait(500);
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
         // Inițializează animația de încărcare
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM încărcat complet');
+            
             // Extrage parametrii din URL
             const urlParams = new URLSearchParams(window.location.search);
             const imei = urlParams.get('imei') || '123456789012345';
@@ -396,57 +824,88 @@
             }
             
             // Setează IMEI și tipul de verificare în pagină
-            document.getElementById('imei-display').textContent = imei;
-            document.getElementById('imei-info').textContent = imei;
-            document.getElementById('service-type-display').textContent = 
-                serviceId === '205' ? 'Verificare Basic' : 'Verificare PRO';
+            if (document.getElementById('imei-display')) {
+                document.getElementById('imei-display').textContent = imei;
+            }
+            if (document.getElementById('imei-info')) {
+                document.getElementById('imei-info').textContent = imei;
+            }
+            if (document.getElementById('service-type-display')) {
+                document.getElementById('service-type-display').textContent = 
+                    serviceId === '205' ? 'Verificare Basic' : 'Verificare PRO';
+            }
             
             // Arată inițial doar animația de plată
-            const animationContainer = document.querySelector('.relative.z-10.w-64.h-64');
-            const stepsContainer = document.getElementById('loading-steps-container');
+            const cardPaymentContainer = document.getElementById('card-payment-container');
+            const stepsLoaderContainer = document.getElementById('loading-steps-container');
             
-            // După 2 secunde (durata scurtată a animației cardului), afișează pașii de încărcare
-            setTimeout(() => {
-                // Ascunde animația cu cardul
-                animationContainer.style.opacity = '0';
-                animationContainer.style.transition = 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+            console.log('Card payment container:', cardPaymentContainer);
+            console.log('Steps loader container:', stepsLoaderContainer);
+            
+            // După 2 secunde (durata animației cardului), afișează pașii de încărcare
+            setTimeout(function() {
+                console.log('Temporizator de 2 secunde declanșat');
                 
-                // Arată noul loader tip React - reduce timpul aici
-                setTimeout(() => {
-                    stepsContainer.classList.remove('hidden');
-                    stepsContainer.classList.add('steps-container-enter');
+                if (cardPaymentContainer) {
+                    cardPaymentContainer.style.opacity = '0';
+                    cardPaymentContainer.style.transition = 'opacity 0.5s ease-out';
                     
-                    // Pornește animația pașilor imediat
-                    startLoadingSteps();
-                }, 300);
+                    setTimeout(function() {
+                        if (cardPaymentContainer) {
+                            cardPaymentContainer.style.display = 'none';
+                        }
+                        
+                        if (stepsLoaderContainer) {
+                            stepsLoaderContainer.classList.remove('hidden');
+                            stepsLoaderContainer.style.display = 'flex';
+                            startLoadingSteps(imei, serviceId);
+                        }
+                    }, 500);
+                }
             }, 2000);
         });
 
-        // Simularea încărcării progresive
-        function startLoadingSteps() {
-            let currentState = 0;
-            renderLoaderSteps(currentState);
+        // Function to generate PDF
+        function generatePDF() {
+            const downloadBtn = document.getElementById('download-pdf');
+            downloadBtn.disabled = true;
+            downloadBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-[#017AFF]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Se generează...';
             
-            const loaderInterval = setInterval(() => {
-                if (currentState >= loadingStates.length - 1) {
-                    clearInterval(loaderInterval);
-                    setTimeout(() => {
-                        // Ascunde loader-ul și arată conținutul
-                        document.getElementById('loading-overlay').classList.add('opacity-0');
-                        document.getElementById('loading-overlay').style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-                        setTimeout(() => {
-                            document.getElementById('loading-overlay').style.display = 'none';
-                            document.getElementById('content-container').classList.remove('opacity-0');
-                            document.getElementById('content-container').style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-                            document.body.style.backgroundColor = '#f8fafc'; // Setează fundalul la deschis când loader-ul a dispărut
-                        }, 800);
-                    }, 1000);
-                } else {
-                    currentState++;
-                    renderLoaderSteps(currentState);
-                }
-            }, 1500); // Durată între pași
+            // Simulăm generarea PDF (pentru demonstrație)
+            // În producție, această funcție ar face o cerere la server pentru generarea PDF-ului
+            setTimeout(() => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const imei = urlParams.get('imei') || '123456789012345';
+                
+                // Creează elementul de ancoră pentru descărcare
+                const link = document.createElement('a');
+                link.href = `/generate_pdf.php?imei=${imei}`;
+                link.target = '_blank';
+                link.download = `IMEI_Report_${imei}.pdf`;
+                
+                // Resetăm butonul
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Descarcă raport PDF
+                `;
+                
+                // Simulează click pentru a descărca
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, 2000);
         }
+
+        // Adaugă listener pentru butonul de descărcare PDF
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadBtn = document.getElementById('download-pdf');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', generatePDF);
+            }
+        });
     </script>
 </body>
 </html> 

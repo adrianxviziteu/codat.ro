@@ -1,7 +1,0 @@
-<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M20 10H100V30H20V10Z" fill="white"/>
-  <path d="M30 15H40V17.5H30V15Z" fill="#9C27B0"/>
-  <path d="M30 18.5H40V21H30V18.5Z" fill="#9C27B0"/>
-  <path d="M30 22H40V25H30V22Z" fill="#9C27B0"/>
-  <text x="45" y="25" font-family="Arial" font-size="14" font-weight="bold" fill="#333">Flip</text>
-</svg> 

@@ -5,7 +5,9 @@ export default function Pricing() {
   return (
     <div className="relative isolate px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="text-base font-semibold text-[#017AFF]">Prețuri</h2>
+      <span className="inline-block px-3 py-1 pb-2 mb-3 text-xs font-medium text-blue-600 border border-blue-200 rounded-full bg-blue-50/50 backdrop-blur-sm">
+                PRETURI
+              </span>
         <p className="mt-2 text-3xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl lg:text-6xl">Alege planul potrivit pentru tine</p>
       </div>
       <p className="mx-auto mt-4 max-w-2xl text-center text-base text-pretty text-gray-600 sm:mt-6 sm:text-lg lg:text-xl">Alege un plan accesibil care îți oferă toate informațiile necesare pentru a verifica iPhone-ul înainte de a-l cumpăra.</p>
