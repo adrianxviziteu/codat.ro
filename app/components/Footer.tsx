@@ -201,7 +201,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <div className="mt-12 border-t border-gray-900/10 pt-6 sm:mt-16 sm:pt-8 lg:mt-20">
+          <div className="mt-12 border-t border-gray-800 pt-6 sm:mt-16 sm:pt-8 lg:mt-20">
             <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
               <div className="text-[10px] sm:text-xs leading-5 text-gray-400">
                 &copy; {new Date().getFullYear()} VerifyPro. Toate drepturile rezervate.

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import AuthProvider from "./components/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "VerifyPro - Email & Phone Verification Service",
-  description: "Professional email and phone number verification service for businesses. Validate contact information in real-time with our powerful API.",
+  title: "CODAT.RO - Platforma de învățare pentru programatori",
+  description: "Află cele mai noi tehnologii și limbaje de programare. Cursuri, tutoriale și resurse pentru dezvoltatori.",
 };
 
 export default function RootLayout({
@@ -15,8 +16,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={inter.className}>{children}</body>
+    <html lang="ro" className="scroll-smooth">
+      <body className={inter.className}>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }

@@ -5,8 +5,8 @@ import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-16 relative">
-      {/* No separate background div - we'll use the main site background */}
+    <section id="testimonials" className="py-16 relative bg-white">
+      {/* Adăugat fundal alb explicit */}
       
       <div className="relative z-10 container mx-auto px-4">
         <div className="text-center mb-10">

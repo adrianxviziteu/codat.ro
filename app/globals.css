@@ -52,12 +52,28 @@ body {
   }
 }
 
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 30px 10px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 50px 20px rgba(59, 130, 246, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 30px 10px rgba(59, 130, 246, 0.3);
+  }
+}
+
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
 
 .animate-marquee2 {
   animation: marquee2 30s linear infinite;
+}
+
+.animate-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
 }
 
 /* Container pentru logo-uri */

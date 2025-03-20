@@ -8,9 +8,9 @@ export default function WorldMapDemo() {
       {/* Background grid pattern */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-5"></div>
       
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/80 to-transparent"></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-100/20 via-transparent to-blue-50/20"></div>
+      {/* Background gradient overlay - schimbat la alb */}
+      <div className="absolute inset-0 bg-white"></div>
+      <div className="absolute inset-0 bg-white"></div>
 
       {/* Content */}
       <div className="relative max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">

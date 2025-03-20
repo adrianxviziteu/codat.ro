@@ -109,10 +109,13 @@ export default function Navbar() {
           </div>
 
           {/* Login Button - În dreapta */}
-          <div className="hidden md:block">
-            <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#017AFF] hover:bg-blue-600 transition-colors">
-              Login
-            </button>
+          <div className="hidden md:flex items-center space-x-3">
+            <Link href="/login" className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-[#017AFF] transition-colors">
+              Conectare
+            </Link>
+            <Link href="/register" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#017AFF] hover:bg-blue-600 transition-colors">
+              Înregistrare
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -171,11 +174,16 @@ export default function Navbar() {
               >
                 Contact
               </button>
-              <button
-                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-[#017AFF] hover:bg-blue-600 transition-colors mt-3"
+              <Link href="/login"
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-[#017AFF] hover:bg-gray-50 transition-colors mt-3"
               >
-                Login
-              </button>
+                Conectare
+              </Link>
+              <Link href="/register"
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white bg-[#017AFF] hover:bg-blue-600 transition-colors mt-2"
+              >
+                Înregistrare
+              </Link>
             </div>
           </motion.div>
         )}
